@@ -51,6 +51,21 @@ class Notes extends Component {
       : str.substr(0, 20) + '...' + str.substr(str.length - 20, str.length);
   }
 
+  saveNote(note) {
+    return invokeApig({
+      path: `/notes/${this.props.params.id}`,
+      method: 'PUT',
+      body: note,
+    }, this.props.userToken);
+  }
+
+  deleteNote() {
+    return invokeApig({
+      path: `/notes/${this.props.params.id}`,
+      method: 'DELETE',
+    }, this.props.userToken);
+  }
+
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
@@ -59,14 +74,6 @@ class Notes extends Component {
 
   handleFileChange = (event) => {
     this.file = event.target.files[0];
-  }
-
-  saveNote(note) {
-    return invokeApig({
-      path: `/notes/${this.props.params.id}`,
-      method: 'PUT',
-      body: note,
-    }, this.props.userToken);
   }
 
   handleSubmit = async (event) => {
@@ -110,6 +117,15 @@ class Notes extends Component {
     }
 
     this.setState({ isDeleting: true });
+
+    try {
+      await this.deleteNote();
+      this.props.router.push('/');
+    }
+    catch(e) {
+      alert(e);
+      this.setState({ isDeleting: false });
+    }
   }
 
   render() {
