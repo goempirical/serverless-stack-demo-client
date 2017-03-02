@@ -5,6 +5,7 @@ import Home from './containers/Home';
 import Login from './containers/Login';
 import Signup from './containers/Signup';
 import NewNote from './containers/NewNote';
+import Notes from './containers/Notes';
 import NotFound from './containers/NotFound';
 
 export default (props) => (
@@ -14,6 +15,7 @@ export default (props) => (
       <Route path="login" component={Login} />
       <Route path="signup" component={Signup} />
       <Route path="notes/new" component={NewNote} />
+      <Route path="notes/:id" component={Notes} />
       <Route path="*" component={NotFound} />
     </Route>
   </Router>
