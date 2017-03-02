@@ -25,6 +25,18 @@ class Login extends Component {
     };
   }
 
+  querystring(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, "\\$&");
+
+    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
+    const results = regex.exec(url);
+
+    if ( ! results) { return null; }
+    if ( ! results[2]) { return ''; }
+
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
   validateForm() {
     return this.state.username.length > 0
       && this.state.password.length > 0;
@@ -43,8 +55,12 @@ class Login extends Component {
 
     try {
       const userToken = await this.login(this.state.username, this.state.password);
+      const redirect = this.querystring('redirect');
+
       this.props.updateUserToken(userToken);
-      this.props.router.push('/');
+      this.props.router.push(redirect === '' || redirect === null
+        ? '/'
+        : redirect);
     }
     catch(e) {
       alert(e);
