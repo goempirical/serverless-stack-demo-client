@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { IndexLink } from 'react-router';
+import { withRouter, IndexLink } from 'react-router';
 import {
   Navbar,
   Nav,
   NavItem,
 } from 'react-bootstrap';
-import { CognitoUserPool, } from 'amazon-cognito-identity-js';
 import { LinkContainer } from 'react-router-bootstrap';
+import { CognitoUserPool, } from 'amazon-cognito-identity-js';
 import config from './config.js';
 import './App.css';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -73,6 +73,10 @@ export default class App extends Component {
     }
 
     this.updateUserToken(null);
+
+    if (this.props.location.pathname !== '/login') {
+      this.props.router.push('/login');
+    }
   }
 
   render() {
@@ -112,3 +116,5 @@ export default class App extends Component {
       );
   }
 }
+
+export default withRouter(App);

@@ -5,6 +5,7 @@ import {
   FormControl,
   ControlLabel,
 } from 'react-bootstrap';
+import { withRouter } from 'react-router';
 import {
   CognitoUserPool,
   AuthenticationDetails,
@@ -13,7 +14,7 @@ import {
 import config from '../config.js';
 import './Login.css';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -40,6 +41,7 @@ export default class Login extends Component {
     try {
       const userToken = await this.login(this.state.username, this.state.password);
       this.props.updateUserToken(userToken);
+      this.props.router.push('/');
     }
     catch(e) {
       alert(e);
@@ -98,3 +100,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default withRouter(Login);
